@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vimeo Search</title>
+	<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+	<link href="css/styles.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header class="header" id="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-3">
+					<h1 class="vim-logo"><span class="vim-logo-first">Vimeo</span> <span class="vim-logo-second">Seacrh</span></h1>
+				</div>
+				<div class="col-xs-12 col-md-9">
+					<form class="vim-search" id="vim-search" name="vim-search">
+						<input class="vim-search-inp" id="vim-search-inp" placeholder="Search Vimeo video"> <button><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main id="vim-feeds">
+		<div class="container">
+			<div class="vim-navigation">
+				<nav class="navbar navbar-default">
+					<div class="container-fluid">
+						<ul class="nav navbar-nav">
+							<li class="dropdown"><select class="form-control" id="selectCountfeed">
+								<option value="10">
+									10
+								</option>
+								<option value="25">
+									25
+								</option>
+								<option value="50">
+									50
+								</option>
+							</select></li>
+							<li>
+								<form class="navbar-form navbar-left">
+									<div class="checkbox">
+										<label><input id="usermorelikes" type="checkbox">User more than 10 likes</label>
+									</div>
+								</form>
+							</li>
+						</ul><!-- /.navbar-collapse -->
+					</div><!-- /.container-fluid -->
+				</nav>
+			</div>
+			<div class="row vim-feed-container" id="vim-feed-container"></div>
+			<div class="row">
+				<div class="vim-next">
+					<button class="btn btn-primary btn-lg btn-block vim-next-btn" id="vim-next-btn" type="button">Next</button>
+				</div>
+			</div>
+		</div>
+	</main>
+	<script src="js/rx.all.js">
+	</script> 
+	<script src="js/vimdata.js">
+	</script> 
+	<script src="js/build.js">
+	</script>
+</body>
+</html>

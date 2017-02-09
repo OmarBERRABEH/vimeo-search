@@ -1,37 +1,37 @@
 'use strict';
 // limited global declration
 (function(window, document, Rx) {
-	   // save 
-       const tplFeed = (feed) => { return `<a href="${feed.user.url}" class="vim-author-img">
-					                        <img alt="image" class="vim-feed-img  img-rounded" src="${feed.user.image}" width="48" height="48">
-					                    </a>
-					                    <div class="vim-feed-body">
-					                        <div class="vim-feed-author">
-					                            <a href="${feed.user.url}">
-					                                <strong>${feed.user.name}</strong>
-					                            </a>
-					                        </div>
-
-					                        <div class="vim-feed-video">
-					                            <div class="vim-video-title">
-					                                <a href="${feed.url}">
-					                                    <h2> ${feed.title}</h2>
-					                                </a>
-					                            </div>
-					                            <div class="vim-video-description">
-					                               <p>
-					                               ${feed.description}
-					                                </p>
-					                            </div>
-					                            <div class="vim-video-footer">
-					                                <span> <span class="glyphicon glyphicon-heart"></span> ${feed.likes} </span>
-					                                <span><span class="glyphicon glyphicon-facetime-video"></span> ${feed.plays}  </span>
-					                                <span> <span class="glyphicon glyphicon-share-alt"></span> ${feed.comments} </span>
-					                            </div>
-					                        </div>
-					                    </div>`};
-
-        
+	   // save the view const function
+       const tplFeed = (feed) => { 
+            return `<a href="${feed.user.url}" class="vim-author-img">
+					    <img alt="image" class="vim-feed-img  img-rounded" src="${feed.user.image}" width="48" height="48">
+					</a>
+					<div class="vim-feed-body">
+					    <div class="vim-feed-author">
+					        <a href="${feed.user.url}">
+					            <strong>${feed.user.name}</strong>
+					        </a>
+					    </div>
+					    <div class="vim-feed-video">
+					        <div class="vim-video-title">
+					            <a href="${feed.url}">
+					                <h2> ${feed.title}</h2>
+					            </a>
+					        </div>
+					        <div class="vim-video-description">
+					           <p>
+					           ${feed.description}
+					            </p>
+					        </div>
+					        <div class="vim-video-footer">
+					            <span> <span class="glyphicon glyphicon-heart"></span> ${feed.likes} </span>
+					            <span><span class="glyphicon glyphicon-facetime-video"></span> ${feed.plays}  </span>
+					            <span> <span class="glyphicon glyphicon-share-alt"></span> ${feed.comments} </span>
+					        </div>
+					    </div>
+					</div>`
+       };
+               
         // stock the data in observaable object
         const dataObservable = Rx.Observable.from(feeds.data);
 		//save the dom                
@@ -122,7 +122,7 @@
     }
 
    
-
+    // observer to maanipulate the next button
     function setPaginationObserver() {
     	const observerPaginate = Rx.Observable.fromEvent(dom.nextBtn, 'click')
                                    .map((e) => {
@@ -146,12 +146,31 @@
     }
 
 
-     // disable the paginaation button
+     // the observer data tp filter a inject to view
+    function setObserverData(textSearch = '', userLike = false, countView = 10) {
+        let source = dataObservable
+              .filter((feed) => {
+                return !userLike  || (!!userLike && feed.user.metadata.connections.likes.total  > 10);
+               })
+              .filter((feed) => {
+                return !textSearch || (!!textSearch && feed.description && feed.description.indexOf(textSearch) !== -1);
+              })
+              .slice(countView - 10, countView)
+              .map(transformData);
+
+              source.subscribe(injectFeed);
+
+        return source
+    }
+   
+
+    // disable the paginaation button
     function resetPagination() {
         dom.nextBtn.setAttribute('data-page-count',0);
         dom.nextBtn.style.display = 'none'; 
     }
 
+    // get the dom to manipulate in observer
     function initDom() {
         dom = {
             container: document.getElementById('vim-feed-container'),
@@ -196,23 +215,7 @@
             }
         }
     }
-
-    function setObserverData(textSearch = '', userLike = false, countView = 10) {
-        let source = dataObservable
-              .filter((feed) => {
-                return !userLike  || (!!userLike && feed.user.metadata.connections.likes.total  > 10);
-               })
-              .filter((feed) => {
-                return !textSearch || (!!textSearch && feed.description && feed.description.indexOf(textSearch) !== -1);
-              })
-              .slice(countView - 10, countView)
-              .map(transformData);
-
-              source.subscribe(injectFeed);
-
-        return source
-    }
-
+    
     // display the default view
     function initView() {
     	//detach all child
@@ -235,7 +238,6 @@
     }
 
 
-
     // the first  function to laaunch when  js is loaded
     // no need to document ready becuse the js aapp is injected in bottom
     function init() {
@@ -243,7 +245,9 @@
          initObserver();
          initView();
     }
- 
+    
+
+    // launch the logic
     init();
 
 })(window, document, Rx);
