@@ -1,0 +1,11 @@
+.header {
+    padding-bottom: 10px;    	
+    background: $primary_color;
+    text-align: center;
+
+    @media (min-width: $screen-md-min) {
+    	padding-bottom: 0;
+    }
+
+
+}

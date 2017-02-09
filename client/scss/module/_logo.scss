@@ -1,0 +1,43 @@
+.vim-logo {
+    position: relative;
+    margin: 0;
+    width: 230px;
+    height: 60px;
+    display: inline-block;
+    text-align: left;
+    background: $primary_color;
+    color: $second_color;
+
+    span {
+        position: absolute;
+        top: 23%;
+        font: $font;
+    }
+
+    .vim-logo-first {
+        padding-left: 19px;
+        background: $primary_color;
+        z-index: 2;
+    }
+
+    .vim-logo-second {
+        left: 94px;
+        padding-left: 10px;
+        background: $second_color;
+        color: $primary_color;
+        z-index: 1;
+        transition: all .5s;
+
+      @media (min-width: $screen-md-min) {
+          left: 45px;
+        }
+    }
+
+    @media (min-width: $screen-md-min) {
+        &:hover {
+            .vim-logo-second {
+                transform: translate(54px);
+            }
+        }
+    }
+}

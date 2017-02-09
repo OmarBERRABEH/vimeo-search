@@ -1,0 +1,59 @@
+.vim-search {
+    position: relative;
+    width: 100%;
+    margin-top: 9px;
+    border: 1px solid $second_color;
+
+    input {
+        width: 100%;
+        height: 40px;
+        padding: 0 88px 0 20px;
+        font: $font;
+        color: $second_color;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+
+        &:focus {
+            border-color: $primary_color;
+        }
+
+        &::-webkit-input-placeholder {
+            color: $second_color;
+            opacity: 0.5;
+        }
+
+        &::-moz-placeholder {
+            color: $second_color;
+            opacity: 0.5;
+        }
+
+        &:-ms-input-placeholder {
+            color: $second_color;
+            opacity: 0.5;
+        }
+
+        &:-moz-placeholder {
+            color: $second_color;
+            opacity: 0.5;
+        }
+    }
+
+    button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 80px;
+        border: none;
+        background: $second_color;
+        color: $primary_color;
+
+        &:hover {
+            background: $primary_color;
+            color: $second_color;
+            border-left: 1px solid $second_color;
+        }
+    }
+}

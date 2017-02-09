@@ -1,0 +1,65 @@
+.vim-feed-container {
+    border: 1px solid #e1e8ed;
+    border-bottom: none;
+}
+
+.vim-feed {
+    position: relative;
+    padding: 9px 12px;
+    border-bottom: 1px solid #e1e8ed;
+
+    &:hover {
+        background-color: #f5f8fa;
+    }
+
+    .vim-feed-img {
+        margin-right: 10px;
+    }
+
+    .vim-feed-video {
+        margin-top: 10px;
+    }
+    
+    .vim-video-title {
+        h2 {
+            margin: 0;
+        }
+    }
+
+    .vim-feed-body {
+        // display: inline-block;
+        margin-left: 60px;
+    }
+
+    .vim-author-img {
+        // display: inline-block;
+        // vertical-align: top;
+        position: absolute;
+        top: 9px;
+        left: 12px;
+    }
+
+    .vim-video-footer {
+        > span {
+            margin-right: 10px;
+            color: #aab8c2;            
+        }
+
+        .glyphicon {
+            margin-right: 10px;
+            font-size: 16px;
+
+            &.glyphicon-heart {
+                color: red;
+            }
+
+            &.glyphicon-facetime-video {
+                color: black;
+            }
+
+            &.glyphicon-share-alt {
+                color: $primary_color;
+            }
+        }
+    }
+}
