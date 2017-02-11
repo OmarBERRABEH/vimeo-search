@@ -2,19 +2,19 @@
 // limited global declration
 (function(window, document, Rx) {
     // save the view const function
-    const tplFeed = (feed) => {
-        return `<a href="${feed.user.url}" class="vim-author-img">
-                        <img alt="image" class="vim-feed-img  img-rounded" src="${feed.user.image}" width="48" height="48">
+    const TPL_FEED = (feed) => {
+        return `<a href="${feed.user.url}" target="_blank" class="vim-author-img" title="${feed.user.name}">
+                        <img alt="${feed.user.name}" class="vim-feed-img  img-rounded" src="${feed.user.image}" width="48" height="48">
                     </a>
                     <div class="vim-feed-body">
                         <div class="vim-feed-author">
-                            <a href="${feed.user.url}">
+                            <a href="${feed.user.url}" target="_blank" title="${feed.user.name}">
                                 <strong>${feed.user.name}</strong>
                             </a>
                         </div>
                         <div class="vim-feed-video">
                             <div class="vim-video-title">
-                                <a href="${feed.url}">
+                                <a href="${feed.url}" target="_blank" title="${feed.title}">
                                     <h2> ${feed.title}</h2>
                                 </a>
                             </div>
@@ -33,7 +33,7 @@
     };
 
     // stock the data in observaable object
-    const dataObservable = Rx.Observable.from(feeds.data);
+    const DATA_OBSERVABLE = Rx.Observable.from(feeds.data);
     //save the dom                
     let dom = null;
     //count view
@@ -144,7 +144,7 @@
 
     // the observer data tp filter a inject to view
     function setObserverData(textSearch = '', userLike = false, countView = 10, pageCount = 1) {
-        let source = dataObservable
+        let source = DATA_OBSERVABLE
             .filter((feed) => {
                 return !userLike || (!!userLike && feed.user.metadata.connections.likes.total > 10);
             })
@@ -209,7 +209,7 @@
     function injectFeed(feed) {
         let divFeed = document.createElement('div');
         divFeed.className = 'vim-feed';
-        divFeed.innerHTML = tplFeed(feed);
+        divFeed.innerHTML = TPL_FEED(feed);
         dom.container.appendChild(divFeed);;
     }
 

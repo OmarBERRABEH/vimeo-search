@@ -3,12 +3,12 @@
 
 (function (window, document, Rx) {
     // save the view const function
-    var tplFeed = function tplFeed(feed) {
-        return '<a href="' + feed.user.url + '" class="vim-author-img">\n                        <img alt="image" class="vim-feed-img  img-rounded" src="' + feed.user.image + '" width="48" height="48">\n                    </a>\n                    <div class="vim-feed-body">\n                        <div class="vim-feed-author">\n                            <a href="' + feed.user.url + '">\n                                <strong>' + feed.user.name + '</strong>\n                            </a>\n                        </div>\n                        <div class="vim-feed-video">\n                            <div class="vim-video-title">\n                                <a href="' + feed.url + '">\n                                    <h2> ' + feed.title + '</h2>\n                                </a>\n                            </div>\n                            <div class="vim-video-description">\n                               <p>\n                               ' + feed.description + '\n                                </p>\n                            </div>\n                            <div class="vim-video-footer">\n                                <span> <span class="glyphicon glyphicon-heart"></span> ' + feed.likes + ' </span>\n                                <span><span class="glyphicon glyphicon-facetime-video"></span> ' + feed.plays + '  </span>\n                                <span> <span class="glyphicon glyphicon-share-alt"></span> ' + feed.comments + ' </span>\n                            </div>\n                        </div>\n                    </div>';
+    var TPL_FEED = function TPL_FEED(feed) {
+        return '<a href="' + feed.user.url + '" target="_blank" class="vim-author-img" title="' + feed.user.name + '">\n                        <img alt="' + feed.user.name + '" class="vim-feed-img  img-rounded" src="' + feed.user.image + '" width="48" height="48">\n                    </a>\n                    <div class="vim-feed-body">\n                        <div class="vim-feed-author">\n                            <a href="' + feed.user.url + '" target="_blank" title="' + feed.user.name + '">\n                                <strong>' + feed.user.name + '</strong>\n                            </a>\n                        </div>\n                        <div class="vim-feed-video">\n                            <div class="vim-video-title">\n                                <a href="' + feed.url + '" target="_blank" title="' + feed.title + '">\n                                    <h2> ' + feed.title + '</h2>\n                                </a>\n                            </div>\n                            <div class="vim-video-description">\n                               <p>\n                               ' + feed.description + '\n                                </p>\n                            </div>\n                            <div class="vim-video-footer">\n                                <span> <span class="glyphicon glyphicon-heart"></span> ' + feed.likes + ' </span>\n                                <span><span class="glyphicon glyphicon-facetime-video"></span> ' + feed.plays + '  </span>\n                                <span> <span class="glyphicon glyphicon-share-alt"></span> ' + feed.comments + ' </span>\n                            </div>\n                        </div>\n                    </div>';
     };
 
     // stock the data in observaable object
-    var dataObservable = Rx.Observable.from(feeds.data);
+    var DATA_OBSERVABLE = Rx.Observable.from(feeds.data);
     //save the dom                
     var dom = null;
     //count view
@@ -108,7 +108,7 @@
         var countView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
         var pageCount = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
 
-        var source = dataObservable.filter(function (feed) {
+        var source = DATA_OBSERVABLE.filter(function (feed) {
             return !userLike || !!userLike && feed.user.metadata.connections.likes.total > 10;
         }).filter(function (feed) {
             return !textSearch || !!textSearch && feed.description && feed.description.indexOf(textSearch) !== -1;
@@ -165,7 +165,7 @@
     function injectFeed(feed) {
         var divFeed = document.createElement('div');
         divFeed.className = 'vim-feed';
-        divFeed.innerHTML = tplFeed(feed);
+        divFeed.innerHTML = TPL_FEED(feed);
         dom.container.appendChild(divFeed);;
     }
 

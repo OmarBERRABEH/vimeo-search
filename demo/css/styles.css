@@ -4061,7 +4061,7 @@ tbody.collapse.in {
   .breadcrumb > li {
     display: inline-block; }
     .breadcrumb > li + li:before {
-      content: "/ ";
+      content: "/ ";
       padding: 0 5px;
       color: #ccc; }
   .breadcrumb > .active {
@@ -6363,6 +6363,11 @@ html, body {
   margin-top: 10px; }
   .vim-next .vim-next-btn {
     display: none; }
+
+.vim-navigation nav {
+  background: transparent;
+  border-color: #2980b9;
+  border-radius: 0; }
 
 .vim-navigation li {
   padding: 10px; }

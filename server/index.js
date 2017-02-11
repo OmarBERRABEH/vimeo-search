@@ -37,9 +37,8 @@ const renderHtml  =  () => {
 			    </header>
 			    <main id="vim-feeds">
 			        <div class="container">
-			        	<div class="vim-navigation">
+			        	<div class="vim-navigation row">
 							<nav class="navbar navbar-default">
-								<div class="container-fluid">
 									<ul class="nav navbar-nav">
 										<li class="dropdown">
 										<select class="form-control" id="selectCountfeed">
@@ -60,8 +59,7 @@ const renderHtml  =  () => {
 												</div>
 											</form>
 										</li>
-									</ul><!-- /.navbar-collapse -->
-								</div><!-- /.container-fluid -->
+									</ul>
 							</nav>
 						</div>
 			            <div class="row vim-feed-container" id="vim-feed-container">		           	             
