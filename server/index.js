@@ -74,7 +74,7 @@ const renderHtml  =  () => {
 			            </div>
 			        </div>
 			    </main>
-			    <script src="//cdnjs.cloudflare.com/ajax/libs/rxjs/4.0.3/rx.all.js"></script>
+			    <script src="/static/js/rx.all.js"></script>
 			    <script src="/static/js/vimdata.js"></script>
 			    <script src="/static/js/app.js"></script>
 			</body>
