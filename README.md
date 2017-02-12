@@ -1,6 +1,6 @@
 #Omar BERRABEH
 # Vimeo Search feed
-Vimeo Search feed is aan aapplication to find filter top vimeo's video
+Vimeo Search feed is an aapplication to find filter top vimeo's video
 
 ![N|image](http://i.imgur.com/Bs2L5Gi.png)
 
