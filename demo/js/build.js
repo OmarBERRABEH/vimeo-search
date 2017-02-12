@@ -2,13 +2,13 @@
 // limited global declration
 
 (function (window, document, Rx) {
-    // save 
-    var tplFeed = function tplFeed(feed) {
-        return '<a href="' + feed.user.url + '" class="vim-author-img">\n\t\t\t\t\t                        <img alt="image" class="vim-feed-img  img-rounded" src="' + feed.user.image + '" width="48" height="48">\n\t\t\t\t\t                    </a>\n\t\t\t\t\t                    <div class="vim-feed-body">\n\t\t\t\t\t                        <div class="vim-feed-author">\n\t\t\t\t\t                            <a href="' + feed.user.url + '">\n\t\t\t\t\t                                <strong>' + feed.user.name + '</strong>\n\t\t\t\t\t                            </a>\n\t\t\t\t\t                        </div>\n\n\t\t\t\t\t                        <div class="vim-feed-video">\n\t\t\t\t\t                            <div class="vim-video-title">\n\t\t\t\t\t                                <a href="' + feed.url + '">\n\t\t\t\t\t                                    <h2> ' + feed.title + '</h2>\n\t\t\t\t\t                                </a>\n\t\t\t\t\t                            </div>\n\t\t\t\t\t                            <div class="vim-video-description">\n\t\t\t\t\t                               <p>\n\t\t\t\t\t                               ' + feed.description + '\n\t\t\t\t\t                                </p>\n\t\t\t\t\t                            </div>\n\t\t\t\t\t                            <div class="vim-video-footer">\n\t\t\t\t\t                                <span> <span class="glyphicon glyphicon-heart"></span> ' + feed.likes + ' </span>\n\t\t\t\t\t                                <span><span class="glyphicon glyphicon-facetime-video"></span> ' + feed.plays + '  </span>\n\t\t\t\t\t                                <span> <span class="glyphicon glyphicon-share-alt"></span> ' + feed.comments + ' </span>\n\t\t\t\t\t                            </div>\n\t\t\t\t\t                        </div>\n\t\t\t\t\t                    </div>';
+    // save the view const function
+    var TPL_FEED = function TPL_FEED(feed) {
+        return '<a href="' + feed.user.url + '" target="_blank" class="vim-author-img" title="' + feed.user.name + '">\n                        <img alt="' + feed.user.name + '" class="vim-feed-img  img-rounded" src="' + feed.user.image + '" width="48" height="48">\n                    </a>\n                    <div class="vim-feed-body">\n                        <div class="vim-feed-author">\n                            <a href="' + feed.user.url + '" target="_blank" title="' + feed.user.name + '">\n                                <strong>' + feed.user.name + '</strong>\n                            </a>\n                        </div>\n                        <div class="vim-feed-video">\n                            <div class="vim-video-title">\n                                <a href="' + feed.url + '" target="_blank" title="' + feed.title + '">\n                                    <h2> ' + feed.title + '</h2>\n                                </a>\n                            </div>\n                            <div class="vim-video-description">\n                               <p>\n                               ' + feed.description + '\n                                </p>\n                            </div>\n                            <div class="vim-video-footer">\n                                <span> <span class="glyphicon glyphicon-heart"></span> ' + feed.likes + ' </span>\n                                <span><span class="glyphicon glyphicon-facetime-video"></span> ' + feed.plays + '  </span>\n                                <span> <span class="glyphicon glyphicon-share-alt"></span> ' + feed.comments + ' </span>\n                            </div>\n                        </div>\n                    </div>';
     };
 
     // stock the data in observaable object
-    var dataObservable = Rx.Observable.from(feeds.data);
+    var DATA_OBSERVABLE = Rx.Observable.from(feeds.data);
     //save the dom                
     var dom = null;
     //count view
@@ -35,7 +35,7 @@
             userLike = false;
             //detach all child
             detachDom();
-            setObserverData(textSearch, userLike, countView, 1).subscribe(resetPagination);
+            setObserverData(textSearch, userLike, countView, 1);
         });
     }
 
@@ -48,21 +48,17 @@
 
         observerSearch.subscribe(function (_countView) {
             countView = parseInt(_countView);
-            if (countView === 10) {
-                dom.nextBtn.setAttribute('data-page-count', 0);
-                dom.nextBtn.style.display = 'block';
-            } else {
-                resetPagination();
-            }
+            // if (countView === 10) {
+            //     dom.nextBtn.setAttribute('data-page-count', 0);
+            //     dom.nextBtn.style.display = 'block';
+            // } else {
+            //     togglePaginationButton(false);
+            // }
 
             //detach all child
             detachDom();
 
-            var sourceData = Rx.Observable.from(feeds.data).filter(function (feed) {
-                return !!textSearch || feed.description && feed.description.indexOf(textSearch) !== -1;
-            }).filter(function (feed) {
-                return !userLike || feed.user.metadata.connections.likes.total > 10;
-            }).map(transformData).slice(0, countView).subscribe(injectFeed);
+            setObserverData(textSearch, userLike, countView, 1);
         });
     }
 
@@ -78,7 +74,7 @@
             detachDom();
             userLike = true;
             textSearch = '';
-            setObserverData(textSearch, userLike, countView, 1).subscribe(resetPagination);
+            setObserverData(textSearch, userLike, countView, 1);
         });
 
         //portion if the checkbox is unchecked
@@ -91,29 +87,70 @@
         });
     }
 
+    // observer to maanipulate the next button
     function setPaginationObserver() {
         var observerPaginate = Rx.Observable.fromEvent(dom.nextBtn, 'click').map(function (e) {
             return e.target.getAttribute('data-page-count') ? e.target.getAttribute('data-page-count') : 0;
         }).filter(function (pageCount) {
-            return parseInt(pageCount) !== 50;
+            return parseInt(pageCount) !== 5;
         }).map(function (pageCount) {
-            return parseInt(pageCount) + 10;
+            return parseInt(pageCount) + 1;
         }).debounce(300).subscribe(function (pageCount) {
-
-            if (pageCount === 50) {
-                resetPagination();
-            }
             dom.nextBtn.setAttribute('data-page-count', pageCount);
-            setObserverData(textSearch, userLike, pageCount);
+            setObserverData(textSearch, userLike, countView, pageCount);
         });
     }
 
+    // the observer data tp filter a inject to view
+    function setObserverData() {
+        var textSearch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var userLike = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+        var countView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
+        var pageCount = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1;
+
+        var source = DATA_OBSERVABLE.filter(function (feed) {
+            return !userLike || !!userLike && feed.user.metadata.connections.likes.total > 10;
+        }).filter(function (feed) {
+            return !textSearch || !!textSearch && feed.description && feed.description.indexOf(textSearch) !== -1;
+        });
+
+        // observable to menaage the next button
+        source.count().subscribe(function (count) {
+            if (countView !== 10 || count <= countView * pageCount) {
+                togglePaginationButton(false);
+                return;
+            }
+
+            togglePaginationButton(true, pageCount);
+        });
+
+        source = source.slice(countView * pageCount - countView, countView * pageCount).map(transformData);
+
+        source.subscribe(injectFeed);
+
+        return source;
+    }
+
     // disable the paginaation button
-    function resetPagination() {
-        dom.nextBtn.setAttribute('data-page-count', 0);
+    // function resetPagination() {
+    //     dom.nextBtn.setAttribute('data-page-count',0);
+    //     dom.nextBtn.style.display = 'none'; 
+    // }
+
+
+    function togglePaginationButton(show) {
+        var page = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+
+        dom.nextBtn.setAttribute('data-page-count', page);
+        if (show) {
+            dom.nextBtn.style.display = 'block';
+            return;
+        }
+
         dom.nextBtn.style.display = 'none';
     }
 
+    // get the dom to manipulate in observer
     function initDom() {
         dom = {
             container: document.getElementById('vim-feed-container'),
@@ -128,9 +165,8 @@
     function injectFeed(feed) {
         var divFeed = document.createElement('div');
         divFeed.className = 'vim-feed';
-        divFeed.innerHTML = tplFeed(feed);
-        dom.container.appendChild(divFeed);
-        ;
+        divFeed.innerHTML = TPL_FEED(feed);
+        dom.container.appendChild(divFeed);;
     }
 
     // function to detache aall; child of container
@@ -159,32 +195,14 @@
         };
     }
 
-    function setObserverData() {
-        var textSearch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-        var userLike = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-        var countView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10;
-
-        var source = dataObservable.filter(function (feed) {
-            return !userLike || !!userLike && feed.user.metadata.connections.likes.total > 10;
-        }).filter(function (feed) {
-            return !textSearch || !!textSearch && feed.description && feed.description.indexOf(textSearch) !== -1;
-        }).slice(countView - 10, countView).map(transformData);
-
-        source.subscribe(injectFeed);
-
-        return source;
-    }
-
     // display the default view
     function initView() {
         //detach all child
         detachDom();
-
         setObserverData(textSearch, userLike, countView, 1);
 
         if (countView === 10) {
-            dom.nextBtn.setAttribute('data-page-count', 10);
-            dom.nextBtn.style.display = 'block';
+            togglePaginationButton(true);
         }
     }
 
@@ -204,5 +222,6 @@
         initView();
     }
 
+    // launch the logic
     init();
 })(window, document, Rx);

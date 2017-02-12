@@ -1,10 +1,16 @@
 .vim-navigation {
- li {
- 	padding: 10px;
- }
+    nav {
+    	background:transparent;
+    	border-color: $primary_color;
+    	border-radius: 0;
+    }
 
- input {
- 	margin-right: 11px;
-    vertical-align: sub;
- }
+    li {
+        padding: 10px;
+    }
+
+    input {
+        margin-right: 11px;
+        vertical-align: sub;
+    }
 }
