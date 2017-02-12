@@ -2,7 +2,7 @@
 # Vimeo Search feed
 Vimeo Search feed is an aapplication to find filter top vimeo's video
 
-#[Online demo](https://omarberrabeh.github.io/vimeo-search/){:target="_blank"}
+#[Online demo](https://omarberrabeh.github.io/vimeo-search/)
 
 ![N|image](http://i.imgur.com/Bs2L5Gi.png)
 
